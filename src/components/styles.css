@@ -65,3 +65,26 @@
     width: 35px;
     height: 35px;
 }
+
+.img {
+    width: 7vh;
+    float: right;
+}
+
+.input-search {
+    width: 680px;
+    margin-bottom: 10px;
+}
+
+.input-search-data {
+    width: 60vh;
+    margin-bottom: 10px;
+}
+
+.button-reset {
+    width: 10vh;
+}
+
+.div-search {
+    display: flex;
+}

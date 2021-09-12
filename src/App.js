@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import { Dimmer, Loader } from 'semantic-ui-react';
 import Weather from './components/Weather';
+import CityInput from './components/CityInput';
 
 function App() {
   const [lat, setLat] = useState(null);
@@ -10,30 +11,33 @@ function App() {
 
   useEffect(() => {
     const fetchData = async () => {
-      navigator.geolocation.getCurrentPosition((position) => {
-        setLat(position.coords.latitude);
-        setLong(position.coords.longitude);
-      });
-
-      console.log("Latitude is:", lat)
-      console.log("Longitude is:", long)
+      if (!lat && !long) {
+        navigator.geolocation.getCurrentPosition((position) => {
+          setLat(position.coords.latitude);
+          setLong(position.coords.longitude);
+        });
+      }
 
       if (!lat || !long) return;
 
       await fetch(`${process.env.REACT_APP_API_URL}/weather/?lat=${lat}&lon=${long}&units=metric&APPID=${process.env.REACT_APP_API_KEY}`)
         .then(res => res.json())
         .then(result => {
-          setData(result)
-          console.log(result);
+          setData(result);
         });
     };
     fetchData();
   }, [lat, long]);
 
+  const selectCity = (lat, lon) => {
+    setLat(lat);
+    setLong(lon);
+  };
+
   return (
     <div className="App">
       {
-        (typeof data.main != 'undefined') ? (<Weather weatherData={data} />) : (<div><Dimmer active><Loader>Loading..</Loader></Dimmer></div>)
+        (typeof data.main != 'undefined') ? (<><CityInput selectCity={selectCity} /><Weather weatherData={data} /></>) : (<div><Dimmer active><Loader>Loading..</Loader></Dimmer></div>)
       }
     </div>
   );

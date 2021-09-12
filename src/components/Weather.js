@@ -1,6 +1,5 @@
 import React from 'react';
 import './styles.css';
-import moment from 'moment';
 import { Button } from 'semantic-ui-react';
 
 const Weather = ({ weatherData }) => {
@@ -16,7 +15,7 @@ const Weather = ({ weatherData }) => {
       </div>
 
       <div className="flex">
-        <p className="day">Date: {moment().format('dddd')} {moment().format('LL')}</p>
+        <p className="day">Date: {new Date(weatherData.dt*1000+(weatherData.timezone*1000)).toString()}</p>
       </div>
 
       <div className="flex">
@@ -28,15 +27,16 @@ const Weather = ({ weatherData }) => {
       </div>
 
       <div className="flex">
-        <p className="description">Description: {weatherData.weather[0].description}</p>
-      </div>
-
-      <div className="flex">
         <p className="sunrise-sunset">Sunrise: {new Date(weatherData.sys.sunrise * 1000).toLocaleTimeString('en-US')}</p>
       </div>
 
       <div className="flex">
         <p className="sunrise-sunset">Sunset: {new Date(weatherData.sys.sunset * 1000).toLocaleTimeString('en-US')}</p>
+      </div>
+
+      <div className="flex">
+        <p className="temp">Description: {weatherData.weather[0].description}</p>
+        <p><img className="img" alt="icon" src={`${process.env.REACT_APP_ICON_URL}/${weatherData.weather[0].icon}@2x.png`} /></p>
       </div>
     </div>
   )
